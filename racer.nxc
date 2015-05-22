@@ -1,0 +1,24 @@
+#include "PSP-Nx-lib.nxc"
+
+const byte SensorPort  =  IN_1;
+#define ADDR     0x02
+
+task main()
+{
+    psp currState;
+	int x;
+	int speed;
+
+    SetSensorLowspeed(SensorPort);
+	Wait(10);
+
+    while (true) {
+        PSP_ReadButtonState(SensorPort, ADDR, currState);
+
+		speed = currState.l_j_y;
+		x = currState.r_j_x;
+
+		OnFwdReg(OUT_A, speed, OUT_REGMODE_SPEED);
+		OnFwdReg(OUT_C, speed, OUT_REGMODE_SPEED);
+	}
+}
